@@ -2459,16 +2459,6 @@ function r($dir,$perm) {
 				$ftime = date("d/m/y G:i", filemtime("$path/$file"));
 				/* cek jika ini berbentuk file */
 				if(!is_file($path.'/'.$file)) continue;
-				$size = filesize($path.'/'.$file)/1024;
-				$size = round($size,3);
-
-				if($size >= 1024){
-					$size = round($size/1024,2).' MB';
-				}else{
-					$size = $size.' KB';
-				}
-
-
 				echo '<tr class="text-center">
 						<td class="pinggir"><img src="';
 
@@ -2533,7 +2523,7 @@ function r($dir,$perm) {
 						$_file = $file;
 					}
 					echo' <a href="?dir='.$path.'&aksi=view&file='.$path.'/'.$file.'">'.$_file.'</a></td>
-					<td>'.$size.'</td>
+					<td>'.formatSize(filesize($file)).'</td>
 					<td>'.$ftime.'</td>
 					<td><a href="?dir='.$path.'&aksi=chmod_file&file='.$path.'/'.$file.'" class="text-center">';
 					if(is_writable($path.'/'.$file)) echo '<font color="#00ff00">';
