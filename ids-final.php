@@ -2570,7 +2570,7 @@ function zipMenu($dir, $file) {
                                 </a>
                             </td>
                             <td>
-                                <a title="Rename" class="badge badge-success" href="?dir='.$dir.'/'.$dirb.'&aksi=rename_folder">&nbsp;<i class="fas fa-pen"></i>&nbsp;</a>&nbsp;&nbsp;<a title="Delete" class="badge badge-danger" href="?dir='.$dir.'/'.$dirb.'&aksi=hapus_folder">&nbsp;<i class="fa fa-trash"></i>&nbsp;</a>
+                                <a title="Rename" class="badge badge-success" href="?dir=<?= $dir ?>/<?= $dirb ?>&aksi=rename_folder">&nbsp;<i class="fas fa-pen"></i>&nbsp;</a>&nbsp;&nbsp;<a title="Delete" class="badge badge-danger" href="?dir=<?= $dir ?>/<?= $dirb ?>&aksi=hapus_folder">&nbsp;<i class="fa fa-trash"></i>&nbsp;</a>
                             </td>
                         </tr>
                     <?php
